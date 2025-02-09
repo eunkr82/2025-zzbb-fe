@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link
+import { Link } from 'react-router-dom';
 
- } from 'react-router-dom';
-const Login = () => {
+const SignIn = () => {
     const [form, setForm] = useState({email: "", pwd: ""});
 
     const handleChange = (e) => {
@@ -53,4 +52,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignIn;
