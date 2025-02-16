@@ -1,22 +1,60 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import SubmitBtn from '../components/SubmitBtn';
+import '../styles/Global.css';
 
-const SignIn = () => {
-    const [form, setForm] = useState({email: "", pwd: ""});
+const SignIn = ({ setUser }) => {
+    const [form, setForm] = useState({email: "", password: ""});
+    const isFormFilled = Object.values(form).every(value => value.trim() != "");
+    
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storeUser = localStorage.getItem("user");
+        if(storeUser) {
+            setUser(JSON.parse(storeUser));
+            navigate('/main');
+        }
+    }, [setUser, navigate]);
 
     const handleChange = (e) => {
-        setForm({...form, [e.target.name]: e.target.value});
+        const { name, value } = e.target;
+        setForm(prevFrom => ({
+            ...prevFrom,
+            [name]:value,
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("입력 정보:", form);
-    }
+        try {
+            const response = await axios.post('/', form);
+            console.log(response);
+
+            if(response.status === 200){
+                const userData = response.data;
+
+                localStorage.setItem('user', JSON.stringify(userData));
+                sessionStorage.setItem('userId', userData.userId);
+                setUser(userData);
+                navigate('/main');
+            } else {
+                console.log("자동 로그인 실패");
+            }
+
+        } 
+        
+        catch (error) {
+                console.error("로그인 실패", error);
+                alert("로그인에 실패했습니다.");
+        }
+    };
 
     return (
         <div className="container">
             <div className="content">
-                <section className="loginEmail">
+                <section className="form">
                     <form onSubmit={handleSubmit}>
                         <p>이메일</p>
                         <input
@@ -29,14 +67,14 @@ const SignIn = () => {
                         />
                         <p>비밀번호</p>
                         <input
-                        type="pwd"
-                        name="pwd"
+                        type="password"
+                        name="password"
                         placeholder="password"
-                        value={form.pwd}
+                        value={form.password}
                         onChange={handleChange}
                         className="input"
                         />
-                        <button type="submit" className="button">시작하기</button>
+                        <SubmitBtn text="시작하기" isDisabled={!isFormFilled} onClick={handleSubmit}/>
                     </form>
                 </section>
                 <section>

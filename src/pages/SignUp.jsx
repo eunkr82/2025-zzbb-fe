@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import axios from "axios";
-
+import SubmitBtn from "../components/SubmitBtn";
+import '../styles/Global.css';
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -10,45 +11,51 @@ const SignUp = () => {
     emailCode: "",
   });
 
-  const [emailExists, setEmailExists] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [showNull, setShowNull] = useState(false);
+  const isFormFilled = useMemo(() => Object.values(form).every(value => value.trim() != "", [form])) ;
+
+  const [emailSent, setEmailSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm(prev => ({...prev, [name]:value}));
   };
 
-  const handleSendCode = async e => {
-    e.preventDefault();
+  const handleSendCode = async () => {
+    if (!form.email.includes("@ewha.ac.kr") && !form.email.includes("@ewhain.net")) {
+      alert("이화인 메일을 입력하세요.");
+      return;
+    }
+
     try{
         await axios.post('/user/join/verify', {email: form.email});
+        setEmailSent(true);
         alert("인증 코드가 이메일로 전송되었습니다.");
     } catch (error) {
         console.error("Error Sending Code", error);
+        alert("이메일 인증 요청 실패");
     }
 
-  }
+  };
 
-  const handleVerifyCode = async e => {
-    e.preventDefault();
+  const handleVerifyCode = async () => {
     try {
-        await axios.post('signup/verify', {email: form.email, code: form.emailCode});
-        alert("인증 코드가 확인되었습니다.");
+      const response = await axios.post('signup/verify', {email: form.email, code: form.emailCode});
+        if (response.data.success) {
+          setIsVerified(true);
+        } else {
+          alert("인증 코드가 일치하지 않습니다.");
+        }
     } catch (error) {
-        console.error("Error Verifying Code", error);
-        alert("인증 코드가 일치하지 않습니다.")
+        console.error("인증 코드 확인 오류", error);
+        alert("인증 코드 확인에 실패했습니다.");
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(form.email === '' || form.password === '' || form.confirmPassword === ''){
-        alert("모든 필드를 입력하세요.");
-        return;
-    }
-
-    if (!emailVerified) {
+    if (!isVerified) {
         alert("이메일 인증을 완료하세요.");
         return;
     }
@@ -59,59 +66,62 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.name, email: form.email, password: form.password }),
+      await axios.post("/user/join", {
+        email: form.email,
+        password: form.password,
       });
-
-      if (response.ok) {
-        alert("회원가입이 완료되었습니다.");
-      } else {
-        alert("회원가입 실패. 다시 시도해주세요.");
-      }
+      alert("회원가입이 완료되었습니다!");
     } catch (error) {
       console.error("회원가입 오류:", error);
+      alert("회원가입에 실패했습니다.");
     }
+
   };
 
   return (
     <div className="container">
         <div className="content">
         <h1>회원가입</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form">
+            <p>이화인 메일</p>
             <input 
                 type="email" 
-                name="email" 
+                name="email"
                 placeholder="이화인 메일" 
                 value={form.email} 
                 onChange={handleChange} 
+                className="input"
                 required />
             <button 
                 type="button" 
-                onClick={handleSendCode}>
-                이메일 인증
+                onClick={handleSendCode}
+                className="inputBtn">
+                {emailSent ? <p>재전송</p> : <p>인증하기</p>}
             </button>
-
+            
             <input
                 type="text" 
-                name="emailCode" 
+                name="emailCode"
                 placeholder="인증 코드 입력" 
                 value={form.emailCode} 
                 onChange={handleChange} 
+                className="input"
                 required />
             <button 
                 type="button" 
-                onClick={handleVerifyCode}>
-                확인
+                onClick={handleVerifyCode}
+                className={isVerified ? "verifiedBtn" : "inputBtn"}>
+                {isVerified ? <p>인증 완료</p> : <p>확인</p>}
             </button>
 
+            <p>비밀번호</p>
             <input 
                 type="password" 
                 name="password" 
                 placeholder="비밀번호" 
                 value={form.password} 
                 onChange={handleChange}
+                className="input"
                 required />
             <input 
                 type="password" 
@@ -119,13 +129,15 @@ const SignUp = () => {
                 placeholder="비밀번호 확인" 
                 value={form.confirmPassword} 
                 onChange={handleChange}
+                className="input"
                 required />
 
-            <button type="submit">가입하기</button>
+            <SubmitBtn text="가입하기" isDisabled={!isFormFilled || !isVerified} onClick={handleSubmit}/>
         </form>
         </div>
     </div>
   );
+
 };
 
 export default SignUp;
