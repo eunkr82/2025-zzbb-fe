@@ -1,0 +1,10 @@
+.navBar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

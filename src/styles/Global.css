@@ -1,0 +1,40 @@
+.componentWrapper {
+    height: 161px;
+    padding: 24px;
+}
+
+.selBtn {
+    width: 64px;
+    height: 33px;
+    background-color: #fff;
+    border-radius: 8.3px;
+    border-color: #A5A4A4;
+    font-size: 12px;
+}
+
+.selBtn-sel {
+    width: 64px;
+    height: 33px;
+    background-color: rgb(91,255,195,21);
+    border-radius: 8.3px;
+    border-color: #058053;
+    font-size: 12px;
+}
+
+.searchField {
+    display: flex;
+    height: 43px;
+    background: white;
+    border-radius: 30px;
+    padding: 5px 20px;
+    margin: 20px 0px;
+    justify-content: space-between;
+}
+
+.searchInput {
+    width: 350px;
+    height: 43px;
+    border-radius: 31px;
+    border: none;
+    cursor: unset;
+}

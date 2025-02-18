@@ -1,0 +1,32 @@
+.mainContent {
+    width: 100%;
+    max-width: 390px;
+    background-image: linear-gradient(rgb(5,128,83),black);
+}
+
+.contentBox {
+    background-color: #fff;
+    border-radius: 50px;
+    margin-top: 144px;
+    padding: 24px;
+}
+
+.titleWrapper {
+    max-height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;;
+}
+
+.sliderContainer {
+    height: 200px;
+    margin: 24px 0px;
+    background-color: #000;
+}
+
+.dbContainer {
+    height: 200px;
+    margin: 24px 0px;
+    background-color: #000;
+}

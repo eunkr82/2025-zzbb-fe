@@ -1,0 +1,41 @@
+.tabBar {
+    display: flex;
+    height: 25px;
+    gap: 30px;
+    padding: 10px 0px;
+    align-items: center;
+}
+
+.tabLink {
+    text-decoration: none;
+}
+
+.main .tabLink {
+    color: white;
+}
+
+.tabSelected {
+    position: relative;
+}
+
+.tabSelected::after {
+    font-family: "Pretendard-Regular";
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+    width: 30px; 
+    height: 2px;
+    background-color: white;
+}
+
+
+.other .tabLink {
+    color: black;
+}
+
+.other .tabSelected::after {
+    color: #058053;
+}
+
