@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import axios from "axios";
 import SubmitBtn from "../components/SubmitBtn";
-import '../styles/Global.css';
+import '../styles/Auth.css';
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -84,35 +84,22 @@ const SignUp = () => {
         <h1>회원가입</h1>
         <form onSubmit={handleSubmit} className="form">
             <p>이화인 메일</p>
-            <input 
-                type="email" 
-                name="email"
-                placeholder="이화인 메일" 
-                value={form.email} 
-                onChange={handleChange} 
-                className="input"
-                required />
-            <button 
-                type="button" 
-                onClick={handleSendCode}
-                className="inputBtn">
-                {emailSent ? <p>재전송</p> : <p>인증하기</p>}
-            </button>
-            
-            <input
-                type="text" 
-                name="emailCode"
-                placeholder="인증 코드 입력" 
-                value={form.emailCode} 
-                onChange={handleChange} 
-                className="input"
-                required />
-            <button 
-                type="button" 
-                onClick={handleVerifyCode}
-                className={isVerified ? "verifiedBtn" : "inputBtn"}>
-                {isVerified ? <p>인증 완료</p> : <p>확인</p>}
-            </button>
+            <div className="inputContainer">
+              <input
+                    type="text" 
+                    name="emailCode"
+                    placeholder="인증 코드 입력" 
+                    value={form.emailCode} 
+                    onChange={handleChange} 
+                    className="input"
+                    required />
+                <button 
+                    type="button" 
+                    onClick={handleSendCode}
+                    className="verifyBtn">
+                    {isVerified ? "인증 완료" : "확인"}
+                </button>
+            </div>
 
             <p>비밀번호</p>
             <input 

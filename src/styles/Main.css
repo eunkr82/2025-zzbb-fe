@@ -1,22 +1,26 @@
-.mainContent {
-    width: 100%;
-    max-width: 390px;
-    background-image: linear-gradient(rgb(5,128,83),black);
-}
 
 .contentBox {
-    background-color: #fff;
+    width: 100%;
+    max-width: 440px;
     border-radius: 50px;
-    margin-top: 144px;
+    background-color: white;
+    margin-top: -40px;
+}
+
+.componentWrapper {
     padding: 24px;
+    margin-bottom: 20px;
 }
 
 .titleWrapper {
     max-height: 20px;
+    padding-top: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;;
+    align-items: center;
 }
 
 .sliderContainer {

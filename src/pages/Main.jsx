@@ -12,14 +12,17 @@ import "../styles/Global.css";
 const Main = () => {
     return (
         <div className="container">
-            <section className="mainContent">
+
+            <section className="gradientContent">
                 <section className="componentWrapper">
                     <NavBar/>
                     <TabBar/>
                     <SearchField/>
                 </section>
-                <section className="contentBox">
-                    <siv className="titleWrapper">
+            </section>
+
+            <section className="contentBox">
+                    <div className="titleWrapper">
                         <Link 
                             to ='/qna'
                             style={{fontfamily: "Pretendard-Regular",
@@ -39,7 +42,7 @@ const Main = () => {
                             }}>
                             <p>모아보기</p>
                         </Link>
-                    </siv>
+                    </div>
                     <div className="sliderContainer">
                         <CardSlider/>
                     </div>
@@ -70,7 +73,7 @@ const Main = () => {
                     </div>
                 </section>
 
-            </section>
+            
         </div>
     );
 };

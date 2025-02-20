@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ReactComponent as ZZBB } from '../assets/ZZBB.svg';
 import axios from 'axios';
 import SubmitBtn from '../components/SubmitBtn';
-import '../styles/Global.css';
+import '../styles/Auth.css';
 
 const SignIn = ({ setUser }) => {
     const [form, setForm] = useState({email: "", password: ""});
-    const isFormFilled = Object.values(form).every(value => value.trim() != "");
+    const isFormFilled = useMemo(() => Object.values(form).every(value => value.trim() != "", [form])) ;
     
     const navigate = useNavigate();
 
@@ -28,13 +29,18 @@ const SignIn = ({ setUser }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!form.email.includes("@ewha.ac.kr") && !form.email.includes("@ewhain.net")) {
+            alert("이화인 메일을 입력하세요.");
+            return;
+        }
+
         try {
             const response = await axios.post('/', form);
             console.log(response);
 
             if(response.status === 200){
                 const userData = response.data;
-
                 localStorage.setItem('user', JSON.stringify(userData));
                 sessionStorage.setItem('userId', userData.userId);
                 setUser(userData);
@@ -54,6 +60,9 @@ const SignIn = ({ setUser }) => {
     return (
         <div className="container">
             <div className="content">
+                <div style={{display: "flex", justifyContent:"center", margin: "50px 0px"}}>
+                    <ZZBB/>
+                </div>
                 <section className="form">
                     <form onSubmit={handleSubmit}>
                         <p>이메일</p>
@@ -77,13 +86,17 @@ const SignIn = ({ setUser }) => {
                         <SubmitBtn text="시작하기" isDisabled={!isFormFilled} onClick={handleSubmit}/>
                     </form>
                 </section>
-                <section>
-                    <p>비밀번호를 잊으셨나요?</p>
-                </section>
-                <section>
+                <section className='extraInfo'>
                     <p>계정이 없으신가요?</p>
-                    <Link to ='/signup'> <p>회원가입</p> </Link>
+                    <Link 
+                        to ='/signup'
+                        style={{color: "#000", }}> 
+                        <p>회원가입</p> 
+                    </Link>
                 </section>
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <p>가입시 이용약관 및 개인정보 처리방침에 동의하게 됩니다.</p>
+                </div>
             </div>
         </div>
 
