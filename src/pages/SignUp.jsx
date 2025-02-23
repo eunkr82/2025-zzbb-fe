@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import axios from "axios";
 import SubmitBtn from "../components/SubmitBtn";
+import { ReactComponent as ZZBB } from "../assets/ZZBB.svg";
 import '../styles/Auth.css';
 
 const SignUp = () => {
@@ -13,23 +14,25 @@ const SignUp = () => {
 
   const isFormFilled = useMemo(() => Object.values(form).every(value => value.trim() != "", [form])) ;
 
-  const [emailSent, setEmailSent] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [status, setStatus] = useState ({
+    emailSent: false,
+    isVerified: false,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({...prev, [name]:value}));
+    setForm((prev) => ({...prev, [name]:value}));
   };
 
   const handleSendCode = async () => {
-    if (!form.email.includes("@ewha.ac.kr") && !form.email.includes("@ewhain.net")) {
-      alert("이화인 메일을 입력하세요.");
+    if (!(form.email.includes("@ewha.ac.kr") || form.email.includes("@ewhain.net"))) {
+      alert("이화 메일을 입력하세요.");
       return;
     }
 
     try{
-        await axios.post('/user/join/verify', {email: form.email});
-        setEmailSent(true);
+        await axios.post('https://2025-zzbb-back.site//user/join/verify', {email: form.email});
+        setStatus((prev) => ({...prev, emailSent : true}));
         alert("인증 코드가 이메일로 전송되었습니다.");
     } catch (error) {
         console.error("Error Sending Code", error);
@@ -40,9 +43,10 @@ const SignUp = () => {
 
   const handleVerifyCode = async () => {
     try {
-      const response = await axios.post('signup/verify', {email: form.email, code: form.emailCode});
+      const response = await axios.post('https://2025-zzbb-back.site/signup/verify', {email: form.email, code: form.emailCode});
         if (response.data.success) {
-          setIsVerified(true);
+          setStatus((prev) => ({...prev, isVerified: true}));
+          alert("인증이 완료되었습니다.");
         } else {
           alert("인증 코드가 일치하지 않습니다.");
         }
@@ -55,7 +59,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isVerified) {
+    if (!status.isVerified) {
         alert("이메일 인증을 완료하세요.");
         return;
     }
@@ -66,13 +70,13 @@ const SignUp = () => {
     }
 
     try {
-      await axios.post("/user/join", {
+      await axios.post("https://2025-zzbb-back.site/user/join", {
         email: form.email,
         password: form.password,
       });
       alert("회원가입이 완료되었습니다!");
     } catch (error) {
-      console.error("회원가입 오류:", error);
+      console.error("회원가입 오류", error);
       alert("회원가입에 실패했습니다.");
     }
 
@@ -81,9 +85,30 @@ const SignUp = () => {
   return (
     <div className="container">
         <div className="content">
-        <h1>회원가입</h1>
+          <h1>ZZBB</h1>
+          <div style={{display: "flex", justifyContent:"center", marginTop: "20px", marginBottom: "30px"}}>
+            <ZZBB/>
+          </div>
         <form onSubmit={handleSubmit} className="form">
-            <p>이화인 메일</p>
+            <p>이메일</p>
+            <div className="inputContainer">
+              <input 
+                  type="email"
+                  name="email"
+                  placeholder="학교 이메일"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="input"
+                  required
+                  disabled={status.emailSent} />
+              <button 
+                  type="button" 
+                  onClick={handleSendCode}
+                  className="verifyBtn"
+                  disabled={!status.emailSent}>
+                  {status.emailSent ? "전송됨" : "전송"}
+              </button>
+            </div>
             <div className="inputContainer">
               <input
                     type="text" 
@@ -92,12 +117,14 @@ const SignUp = () => {
                     value={form.emailCode} 
                     onChange={handleChange} 
                     className="input"
-                    required />
+                    required
+                    disabled={status.isVerified} />
                 <button 
                     type="button" 
-                    onClick={handleSendCode}
-                    className="verifyBtn">
-                    {isVerified ? "인증 완료" : "확인"}
+                    onClick={handleVerifyCode}
+                    className="verifyBtn"
+                    disabled={!status.emailSent || !status.isVerified}>
+                    {status.isVerified ? "인증완료" : "확인"}
                 </button>
             </div>
 
@@ -119,7 +146,7 @@ const SignUp = () => {
                 className="input"
                 required />
 
-            <SubmitBtn text="가입하기" isDisabled={!isFormFilled || !isVerified} onClick={handleSubmit}/>
+            <SubmitBtn text="가입하기" isDisabled={!isFormFilled || !status.isVerified} onClick={handleSubmit}/>
         </form>
         </div>
     </div>

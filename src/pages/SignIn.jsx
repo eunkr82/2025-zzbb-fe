@@ -1,28 +1,20 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as ZZBB } from '../assets/ZZBB.svg';
-import axios from 'axios';
+import api from '../axios/Api';
 import SubmitBtn from '../components/SubmitBtn';
 import '../styles/Auth.css';
 
 const SignIn = ({ setUser }) => {
-    const [form, setForm] = useState({email: "", password: ""});
-    const isFormFilled = useMemo(() => Object.values(form).every(value => value.trim() != "", [form])) ;
+    const [form, setForm] = useState({username: "", password: ""});
+    const isFormFilled = useMemo(() => Object.values(form).every(value => value.trim() !== "", [form.username, form.password])) ;
     
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const storeUser = localStorage.getItem("user");
-        if(storeUser) {
-            setUser(JSON.parse(storeUser));
-            navigate('/main');
-        }
-    }, [setUser, navigate]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm(prevFrom => ({
-            ...prevFrom,
+        setForm(prevForm => ({
+            ...prevForm,
             [name]:value,
         }));
     };
@@ -30,27 +22,29 @@ const SignIn = ({ setUser }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!form.email.includes("@ewha.ac.kr") && !form.email.includes("@ewhain.net")) {
+        if (!form.username.includes("@ewha.ac.kr") && !form.username.includes("@ewhain.net")) {
             alert("이화인 메일을 입력하세요.");
             return;
         }
 
         try {
-            const response = await axios.post('/', form);
-            console.log(response);
+            const response = await api.post('/user/login', form);
 
             if(response.status === 200){
-                const userData = response.data;
-                localStorage.setItem('user', JSON.stringify(userData));
-                sessionStorage.setItem('userId', userData.userId);
-                setUser(userData);
-                navigate('/main');
-            } else {
-                console.log("자동 로그인 실패");
-            }
+                const { accessToken, refreshToken, user } = response.data.data;
+                
+                console.log("로그인 응답 데이터:", response.data);
+                console.log("data 객체:", response.data.data);
 
+                localStorage.setItem("accessToken", accessToken);
+                localStorage.setItem("refreshToken", refreshToken);
+                setUser(user); 
+                navigate("/main");
+            } else {
+                console.log("자동 로그인 실패: ", response.status);
+                alert("자동 로그인에 실패했습니다.");
+            }
         } 
-        
         catch (error) {
                 console.error("로그인 실패", error);
                 alert("로그인에 실패했습니다.");
@@ -67,10 +61,10 @@ const SignIn = ({ setUser }) => {
                     <form onSubmit={handleSubmit}>
                         <p>이메일</p>
                         <input
-                        type="email"
-                        name="email"
-                        placeholder="email"
-                        value={form.email}
+                        type="username"
+                        name="username"
+                        placeholder="username"
+                        value={form.username}
                         onChange={handleChange}
                         className="input"
                         />
