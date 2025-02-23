@@ -8,3 +8,17 @@
     align-items: center;
     gap: 15px;
 }
+
+.navText {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+
+.navText.black {
+    color: black;
+}
+
+.navText.white {
+    color: white;
+}
