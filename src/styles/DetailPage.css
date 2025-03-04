@@ -1,0 +1,62 @@
+.detailPageTitle {
+    font-size: 16px;
+    font-weight: bold;   
+}
+
+.hashTagContainer {
+    width: 200px;
+    height: 18px;
+    background-color: #787878;
+}
+
+.detailPageContent {
+    color: #787878;
+}
+
+.detailPageImageContainer {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    overflow: hidden;
+}
+
+.detailImage {
+    width: 206px; 
+    height: 217px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.reactionWrapper {
+    margin-bottom: 30px;
+}
+
+.commentContainer {
+    width: 100%;
+    max-width: 390px;
+    border-radius: 20px 20px 0px 0px;
+    background-color:#f1f1f1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.comment {
+    max-width: 335px;
+    max-height: 173px;
+    border-radius: 10px;
+    background-color: #fff;
+    margin: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.nickname {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.commentBody {
+    font-size: 11px;
+    color: #787878;
+}

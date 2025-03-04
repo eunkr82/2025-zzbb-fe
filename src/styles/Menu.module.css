@@ -1,0 +1,27 @@
+.contentBox {
+    width: 100%;
+    max-width: 390px;
+    border-radius: 50px 50px 0px 0px;
+    background-color:#f1f1f1;
+}
+
+.postContainer {
+    max-width: 335px;
+    max-height: 173px;
+    border-radius: 10px;
+    background-color: #fff;
+    margin: 30px;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.postTitle {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+.postBody {
+    font-size: 10px;
+    color: #787878
+}

@@ -9,6 +9,9 @@ import QnA from './pages/QnA';
 import DataBase from './pages/Database';
 import MyPage from './pages/MyPage';
 import Search from './pages/Search';
+import DbDetails from './pages/DbDetails.jsx';
+import QnADetails from './pages/QnADetails.jsx';
+import Notification from './pages/Notification.jsx';
 import api from './axios/Api.js';
 import './App.css';
 
@@ -21,10 +24,7 @@ function App() {
     const checkAndRefreshToken = async () => {
       let accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
-
-      console.log("액세스토큰: ", accessToken);
-      console.log("리프레시 토큰: ", refreshToken);
-
+      
       if (!accessToken) {
         if (!refreshToken) {
           navigate("/signin");
@@ -55,7 +55,10 @@ function App() {
         <Route path="/signup" element = {<SignUp setUser={setUser}/>} /> 
         <Route path="/main" element = {<Main user={user}/>} />  
         <Route path="/qna" element = {<QnA user={user}/>} />
-        <Route path="/database" element = {<DataBase user={user}/>} />
+        <Route path="/db" element = {<DataBase user={user}/>} />
+        <Route path="/db/:dbId" element = {<DbDetails user={user}/>} />
+        <Route path="/qna/:qnaId" element = {<QnADetails user={user}/>} />
+        <Route path="/notification" element = {<Notification user={user} />} />
         <Route path="/mypage" element = {<MyPage user={user}/>} />   
         <Route path="/search" element = {<Search user={user}/>} />
       </Routes>

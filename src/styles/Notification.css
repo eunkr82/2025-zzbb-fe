@@ -1,0 +1,68 @@
+.notificationContainer {
+    width: 100%;
+    max-width: 390px;
+    margin: auto;
+    padding: 20px;
+}
+
+.notificationTabContainer {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 20px;
+}
+
+
+.tabItem {
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.tabItem p {
+    font-size: 16px;
+    color: black;
+}
+
+.tabItem.active p {
+    color: #058053;
+}
+
+.tabUnderline {
+    width: 100%;
+    height: 3.5px;
+    background-color: #058053;
+}
+
+.notificationList {
+    list-style: none;
+    padding: 0;
+}
+
+.notificationItem {
+    width: 100%;
+    max-width: 390px;
+    height: 72px;
+    padding-top: 20px;
+    border-bottom: 1px solid #bdbdbd;
+    cursor: pointer;
+}
+
+.notificationItem.unread {
+    background-color: #f1f1f1;
+}
+
+.notificationTitle {
+    font-size: 16px;
+}
+
+.notificationComment {
+    display: flex;
+    color: #787878;
+    gap: 5px;
+}
+
+.noNotifications {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
