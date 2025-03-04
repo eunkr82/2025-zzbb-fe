@@ -1,0 +1,22 @@
+.tag {
+    width: 64px;
+    height: 33px;
+    border-radius: 8px;
+    border-color: 2px solid #A5A4A4;
+    text-align: center;
+}
+
+.tag .selected {
+    background-color: rgb(200,242,227);
+    border-color: 2px solid #058053;
+
+}
+
+.tagText {
+    font-size: 12px;
+    color: #696969;
+}
+
+.tagText .selected {
+    color: #000;
+}

@@ -1,4 +1,3 @@
-
 .contentBox {
     width: 100%;
     max-width: 440px;
@@ -25,12 +24,9 @@
 
 .sliderContainer {
     height: 200px;
-    margin: 24px 0px;
-    background-color: #000;
+    margin: 24px 40px;
 }
 
 .dbContainer {
-    height: 200px;
     margin: 24px 0px;
-    background-color: #000;
 }

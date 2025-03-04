@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as ZZBB } from '../assets/ZZBB.svg';
 import api from '../axios/Api';
 import SubmitBtn from '../components/SubmitBtn';
-import '../styles/Auth.css';
+import styles from "../styles/Auth.module.css";
 
 const SignIn = ({ setUser }) => {
     const [form, setForm] = useState({username: "", password: ""});
@@ -32,9 +32,6 @@ const SignIn = ({ setUser }) => {
 
             if(response.status === 200){
                 const { accessToken, refreshToken, user } = response.data.data;
-                
-                console.log("로그인 응답 데이터:", response.data);
-                console.log("data 객체:", response.data.data);
 
                 localStorage.setItem("accessToken", accessToken);
                 localStorage.setItem("refreshToken", refreshToken);
@@ -53,11 +50,11 @@ const SignIn = ({ setUser }) => {
 
     return (
         <div className="container">
-            <div className="content">
+            <div className={styles.content}>
                 <div style={{display: "flex", justifyContent:"center", margin: "50px 0px"}}>
                     <ZZBB/>
                 </div>
-                <section className="form">
+                <section className={styles.form}>
                     <form onSubmit={handleSubmit}>
                         <p>이메일</p>
                         <input
@@ -66,7 +63,7 @@ const SignIn = ({ setUser }) => {
                         placeholder="username"
                         value={form.username}
                         onChange={handleChange}
-                        className="input"
+                        className={styles.input}
                         />
                         <p>비밀번호</p>
                         <input
@@ -75,12 +72,12 @@ const SignIn = ({ setUser }) => {
                         placeholder="password"
                         value={form.password}
                         onChange={handleChange}
-                        className="input"
+                        className={styles.input}
                         />
                         <SubmitBtn text="시작하기" isDisabled={!isFormFilled} onClick={handleSubmit}/>
                     </form>
                 </section>
-                <section className='extraInfo'>
+                <section className={styles.extraInfo}>
                     <p>계정이 없으신가요?</p>
                     <Link 
                         to ='/signup'

@@ -3,6 +3,13 @@
     justify-content: space-between;
 }
 
+.detailPageNavBar {
+    display: flex;
+    gap: 150px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .iconWrapper {
     display: flex;
     align-items: center;
@@ -12,7 +19,6 @@
 .navText {
     font-size: 16px;
     font-weight: bold;
-    color: black;
 }
 
 .navText.black {

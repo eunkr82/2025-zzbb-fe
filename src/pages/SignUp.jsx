@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
-import axios from "axios";
+import api from "../axios/Api";
 import SubmitBtn from "../components/SubmitBtn";
 import { ReactComponent as ZZBB } from "../assets/ZZBB.svg";
-import '../styles/Auth.css';
+import styles from "../styles/Auth.module.css";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -31,7 +31,7 @@ const SignUp = () => {
     }
 
     try{
-        await axios.post('https://2025-zzbb-back.site//user/join/verify', {email: form.email});
+        await api.post('/user/join/verify', {email: form.email});
         setStatus((prev) => ({...prev, emailSent : true}));
         alert("인증 코드가 이메일로 전송되었습니다.");
     } catch (error) {
@@ -43,7 +43,7 @@ const SignUp = () => {
 
   const handleVerifyCode = async () => {
     try {
-      const response = await axios.post('https://2025-zzbb-back.site/signup/verify', {email: form.email, code: form.emailCode});
+      const response = await api.post('/signup/verify', {email: form.email, code: form.emailCode});
         if (response.data.success) {
           setStatus((prev) => ({...prev, isVerified: true}));
           alert("인증이 완료되었습니다.");
@@ -70,7 +70,7 @@ const SignUp = () => {
     }
 
     try {
-      await axios.post("https://2025-zzbb-back.site/user/join", {
+      await api.post("/user/join", {
         email: form.email,
         password: form.password,
       });
@@ -84,45 +84,45 @@ const SignUp = () => {
 
   return (
     <div className="container">
-        <div className="content">
+        <div className={styles.content}>
           <h1>ZZBB</h1>
           <div style={{display: "flex", justifyContent:"center", marginTop: "20px", marginBottom: "30px"}}>
             <ZZBB/>
           </div>
-        <form onSubmit={handleSubmit} className="form">
+        <form onSubmit={handleSubmit} className={styles.form}>
             <p>이메일</p>
-            <div className="inputContainer">
+            <div className={styles.inputContainer}>
               <input 
                   type="email"
                   name="email"
                   placeholder="학교 이메일"
                   value={form.email}
                   onChange={handleChange}
-                  className="input"
+                  className={styles.input}
                   required
                   disabled={status.emailSent} />
               <button 
                   type="button" 
                   onClick={handleSendCode}
-                  className="verifyBtn"
+                  className={styles.verifyBtn}
                   disabled={!status.emailSent}>
                   {status.emailSent ? "전송됨" : "전송"}
               </button>
             </div>
-            <div className="inputContainer">
+            <div className={styles.inputContainer}>
               <input
                     type="text" 
                     name="emailCode"
                     placeholder="인증 코드 입력" 
                     value={form.emailCode} 
                     onChange={handleChange} 
-                    className="input"
+                    className={styles.input}
                     required
                     disabled={status.isVerified} />
                 <button 
                     type="button" 
                     onClick={handleVerifyCode}
-                    className="verifyBtn"
+                    className={styles.verifyBtn}
                     disabled={!status.emailSent || !status.isVerified}>
                     {status.isVerified ? "인증완료" : "확인"}
                 </button>
@@ -135,7 +135,7 @@ const SignUp = () => {
                 placeholder="비밀번호" 
                 value={form.password} 
                 onChange={handleChange}
-                className="input"
+                className={styles.input}
                 required />
             <input 
                 type="password" 
@@ -143,7 +143,7 @@ const SignUp = () => {
                 placeholder="비밀번호 확인" 
                 value={form.confirmPassword} 
                 onChange={handleChange}
-                className="input"
+                className={styles.input}
                 required />
 
             <SubmitBtn text="가입하기" isDisabled={!isFormFilled || !status.isVerified} onClick={handleSubmit}/>

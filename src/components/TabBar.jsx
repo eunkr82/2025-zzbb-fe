@@ -4,26 +4,32 @@ import '../styles/TabBar.css';
 
 const TabBar = () => {
     const location = useLocation();
-    const isColorWhite = location.pathname === "/main" || location.pathname === "/mypage";
+    const isColorWhite = ["/main", "/mypage"].includes(location.pathname);
     
     const tabs = [
         {path: '/main', label: "홈"},
         {path: '/qna', label: "질문"},
-        {path: '/database', label: "DB"},
+        {path: '/db', label: "DB"},
         {path: '/mypage', label: "마이"},
     ]
 
     return (
         <div className={`tabBar ${isColorWhite ? "main" : "other"}`}>
-            {tabs.map((tab) => (
-                <Link   
-                    key={tab.path}
-                    to={tab.path}
-                    className={`tabLink  ${location.pathname === tab.path ? "tabSelected" : "" }`}
-                >
-                    <p style={{fontSize: "15px"}}>{tab.label}</p>
+            {tabs.map((tab) => {
+                const isActive = location.pathname === tab.path;
+                
+                return (
+                    <Link   
+                        key={tab.path}
+                        to={tab.path}
+                        className="tabLink">
+                        <p className={`tabLabel ${isColorWhite ? "white" : isActive ? "green" : "black"}`}>
+                            {tab.label}
+                        </p>
+                        {isActive && <div className={`tabUnderline ${isColorWhite ? "white" : "green"}`}/>}
                 </Link>
-            ))}
+                );
+            })}
         </div>
 
     );

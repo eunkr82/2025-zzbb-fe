@@ -49,7 +49,7 @@ const Main = () => {
 
                     <div className="titleWrapper">
                         <Link 
-                            to ='/database'
+                            to ='/db'
                             style={{fontfamily: "Pretendard-Regular",
                                     color: "#000",
                                     fontSize: "16px",
@@ -59,7 +59,7 @@ const Main = () => {
                             <p>사전 DB 바로가기 🔍</p>
                         </Link>
                         <Link 
-                            to = '/database'
+                            to = '/db'
                             style={{fontFamily: "Pretendard-Regular",
                                     color: "#BDBDBD",
                                     fontSize: "11px",
@@ -69,7 +69,7 @@ const Main = () => {
                         </Link>
                     </div>
                     <div className="dbContainer">
-                            <DbList/>
+                        <DbList/>
                     </div>
                 </section>
 
